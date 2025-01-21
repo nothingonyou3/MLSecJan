@@ -1,8 +1,8 @@
 import torch
 from torchvision.models.resnet import resnet50
 import torch.backends.cudnn as cudnn
-from archs.cifar_resnet import resnet as resnet_cifar
-from datasets import get_normalize_layer
+from MLSecJan.archs.cifar_resnet import resnet as resnet_cifar
+from MLSecJan.datasets import get_normalize_layer
 from torch.nn.functional import interpolate
 
 # resnet50 - the classic ResNet-50, sized for ImageNet
