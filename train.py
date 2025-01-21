@@ -2,13 +2,13 @@ import os
 import torch
 from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader
-from datasets import get_dataset, DATASETS
-from architectures import ARCHITECTURES, get_architecture
+from MLSecJan.datasets import get_dataset, DATASETS
+from MLSecJan.architectures import ARCHITECTURES, get_architecture
 from torch.optim import SGD, Optimizer
 from torch.optim.lr_scheduler import StepLR
 import time
 import datetime
-from train_utils import AverageMeter, accuracy, init_logfile, log
+from MLSecJan.train_utils import AverageMeter, accuracy, init_logfile, log
 from robustbench import load_model
 from robustbench.data import load_cifar10
 
