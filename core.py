@@ -77,6 +77,7 @@ class Smooth(object):
         else:
             return top2[0]
 
+
     def _sample_noise(self, x, num, batch_size):
     with torch.no_grad():
         counts = np.zeros(self.num_classes, dtype=int)
@@ -84,8 +85,9 @@ class Smooth(object):
             this_batch_size = min(batch_size, num)
             num -= this_batch_size
             batch = x.repeat((this_batch_size, 1, 1, 1))
-            #CHANGE: Create noise on the SAME device as batch
-            noise = torch.randn_like(batch, device=x.device) * self.sigma 
+            #The problem was here, noise was created on CPU by default
+            #We specify to create it on the device passed to the class
+            noise = torch.randn_like(batch, device=self.device) * self.sigma #This should fix it
             predictions = self.base_classifier(batch + noise).argmax(1)
             counts += self._count_arr(predictions.cpu().numpy(), self.num_classes)
         return counts
