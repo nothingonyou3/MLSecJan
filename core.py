@@ -80,15 +80,14 @@ class Smooth(object):
     def _sample_noise(self, x, num, batch_size):
         with torch.no_grad():
             counts = np.zeros(self.num_classes, dtype=int)
-            for _ in range(num // batch_size):
-                this_batch_size = min(batch_size, num)
-                num -= this_batch_size
-                batch = x.repeat((this_batch_size, 1, 1, 1))
-                #The change is in the next line:
-                noise = torch.randn_like(batch, device=x.device) * self.sigma #Create noise on the same device as x
-                predictions = self.base_classifier(batch + noise).argmax(1)
-                counts += self._count_arr(predictions.cpu().numpy(), self.num_classes)
-            return counts
+            for i in range(num_batches):
+                 this_batch_size = min(batch_size, num - batch_size * i)
+                 batch = x.repeat((this_batch_size, 1, 1, 1))
+-                noise = torch.randn_like(batch, device="cpu") * self.sigma
++                noise = torch.randn_like(batch, device=x.device) * self.sigma # Create noise on the same device as x
+                 predictions = self.base_classifier(batch + noise).argmax(1)
+                 counts += self._count_arr(predictions.cpu().numpy(), self.num_classes)
+             return counts
             
     def _count_arr(self, arr: np.ndarray, length: int) -> np.ndarray:
         counts = np.zeros(length, dtype=int)
