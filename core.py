@@ -24,7 +24,7 @@ class Smooth(object):
         self.sigma = sigma
 
     def certify(
-        self, x: torch.tensor, n0: int, n: int, alpha: float, batch_size: int
+        self, x: torch.tensor, n0: int, n: int, alpha: float, batch_size: int, device
     ) -> (int, float):
         """Monte Carlo algorithm for certifying that g's prediction around x is constant within some L2 radius.
         With probability at least 1 - alpha, the class returned by this method will equal g(x), and g's prediction will
@@ -54,7 +54,7 @@ class Smooth(object):
             radius = self.sigma * norm.ppf(pABar)
             return cAHat, radius
 
-    def predict(self, x: torch.tensor, n: int, alpha: float, batch_size: int) -> int:
+    def predict(self, x: torch.tensor, n: int, alpha: float, batch_size: int, device) -> int:
         """Monte Carlo algorithm for evaluating the prediction of g at x.  With probability at least 1 - alpha, the
         class returned by this method will equal g(x).
 
